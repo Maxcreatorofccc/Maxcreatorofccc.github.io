@@ -1,265 +1,881 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Website</title>
 
-<style>
-:root{
-    --bg:#0f0f0f;
-    --card:#1e1e1e;
-    --text:white;
-}
+  <style>
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B1020;
+      --card:rgba(255,255,255,0.06);
+      --card2:rgba(255,255,255,0.09);
+      --stroke:rgba(255,255,255,0.10);
+      --text:#EAF0FF;
+      --muted:rgba(234,240,255,0.70);
+      --accent:#7C5CFF;
+      --accent2:#28D7FF;
+      --good:#2DD4BF;
+      --bad:#FB7185;
+      --warn:#FBBF24;
+      --shadow: 0 18px 60px rgba(0,0,0,0.45);
+      --radius: 22px;
+    }
 
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:var(--bg);
-    color:var(--text);
-    transition:0.3s;
-}
+    body.light{
+      --bg0:#F4F7FF;
+      --bg1:#FFFFFF;
+      --card:rgba(0,0,0,0.04);
+      --card2:rgba(0,0,0,0.06);
+      --stroke:rgba(0,0,0,0.08);
+      --text:#0B1020;
+      --muted:rgba(11,16,32,0.68);
+      --shadow: 0 16px 45px rgba(0,0,0,0.12);
+    }
 
-.light-mode{
-    --bg:#f4f4f4;
-    --card:#ffffff;
-    --text:#111;
-}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(900px 700px at 15% 10%, rgba(124,92,255,0.35), transparent 55%),
+        radial-gradient(900px 700px at 85% 20%, rgba(40,215,255,0.25), transparent 55%),
+        radial-gradient(800px 650px at 50% 95%, rgba(45,212,191,0.18), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
 
-nav{
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    padding:15px;
-    background:#1a1a1a;
-    flex-wrap:wrap;
-}
+    /* Layout */
+    .wrap{
+      width:min(1100px, 92vw);
+      margin: 28px auto 80px;
+    }
 
-nav button{
-    background:#333;
-    color:white;
-    border:none;
-    padding:10px 18px;
-    border-radius:20px;
-    cursor:pointer;
-    transition:0.3s;
-}
+    /* Topbar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding: 16px 18px;
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position:sticky;
+      top:14px;
+      z-index:30;
+    }
 
-nav button:hover{
-    transform:scale(1.1);
-    background:#555;
-}
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 220px;
+    }
 
-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px;
-}
+    .logo{
+      width:42px; height:42px;
+      border-radius:14px;
+      background:
+        radial-gradient(14px 14px at 25% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0) 60%),
+        linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 16px 40px rgba(124,92,255,0.25);
+      border:1px solid rgba(255,255,255,0.18);
+      flex: 0 0 auto;
+    }
 
-.status{
-    padding:8px 15px;
-    border-radius:20px;
-    font-weight:bold;
-}
+    .brand h1{
+      font-size: 14px;
+      margin:0;
+      letter-spacing:0.2px;
+      line-height:1.2;
+      font-weight: 750;
+    }
+    .brand p{
+      margin:2px 0 0;
+      font-size: 12px;
+      color:var(--muted);
+    }
 
-.card{
-    background:var(--card);
-    width:320px;
-    margin:30px auto;
-    padding:25px;
-    border-radius:25px;
-    transition:0.3s;
-}
+    .nav{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
 
-.card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 10px 25px rgba(0,0,0,0.3);
-}
+    .chip{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      padding:10px 14px;
+      border-radius: 999px;
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      font-weight: 650;
+      font-size: 13px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      user-select:none;
+    }
+    .chip:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.08); }
+    .chip.active{
+      background: linear-gradient(135deg, rgba(124,92,255,0.28), rgba(40,215,255,0.20));
+      border-color: rgba(124,92,255,0.35);
+    }
 
-.progress-bar{
-    background:#333;
-    border-radius:20px;
-    overflow:hidden;
-    margin-top:15px;
-}
+    .right{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      min-width: 260px;
+    }
 
-.progress{
-    height:20px;
-    background:limegreen;
-    width:50%;
-    text-align:center;
-    font-size:12px;
-}
+    .pill{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      padding: 10px 12px;
+      border-radius: 999px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size: 12.5px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .dot{
+      width:9px; height:9px; border-radius:999px;
+      background: var(--good);
+      box-shadow: 0 0 0 6px rgba(45,212,191,0.14);
+    }
 
-.tab{ display:none; padding:20px; text-align:center; }
-.active-tab{ display:block; }
+    .iconbtn{
+      width:40px; height:40px;
+      border-radius: 14px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease;
+      display:grid;
+      place-items:center;
+      user-select:none;
+    }
+    .iconbtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.10); }
 
-.button{
-    padding:10px 15px;
-    border:none;
-    border-radius:15px;
-    cursor:pointer;
-    margin:5px;
-    transition:0.3s;
-}
+    /* Hero */
+    .hero{
+      margin-top: 18px;
+      display:grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      gap: 14px;
+    }
+    @media (max-width: 900px){
+      .hero{ grid-template-columns: 1fr; }
+      .brand{ min-width:auto; }
+      .right{ min-width:auto; }
+      .topbar{ position:static; }
+    }
 
-.button:hover{
-    transform:scale(1.1);
-}
+    .panel{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      backdrop-filter: blur(14px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
 
-.admin-panel{
-    display:none;
-    background:var(--card);
-    padding:20px;
-    margin:40px auto;
-    width:350px;
-    border-radius:20px;
-}
+    .heroTitle{
+      margin: 0 0 6px;
+      font-size: 26px;
+      letter-spacing:-0.4px;
+    }
+    .heroSub{
+      margin: 0;
+      color: var(--muted);
+      line-height:1.5;
+      font-size: 14px;
+    }
 
-input, textarea{
-    width:90%;
-    margin:5px;
-    padding:6px;
-}
+    .stats{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top: 14px;
+    }
+    .mini{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      border-radius: 18px;
+      padding: 12px 12px;
+    }
+    .mini .k{ font-size:12px; color:var(--muted); margin:0 0 6px;}
+    .mini .v{ font-size:16px; font-weight: 800; margin:0; display:flex; align-items:center; gap:8px;}
+    .badge{
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-weight: 750;
+    }
 
-.social-btn{
-    display:inline-block;
-    padding:10px 15px;
-    margin:5px;
-    border-radius:15px;
-    text-decoration:none;
-    color:white;
-    transition:0.3s;
-}
+    /* Cards grid */
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .col-8{ grid-column: span 8; }
+    .col-4{ grid-column: span 4; }
+    .col-6{ grid-column: span 6; }
+    .col-12{ grid-column: span 12; }
+    @media (max-width: 900px){
+      .col-8,.col-4,.col-6{ grid-column: span 12; }
+    }
 
-.social-btn:hover{
-    transform:scale(1.1);
-}
+    .cardTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin:0 0 10px;
+    }
+    .cardTitle h2{
+      margin:0;
+      font-size: 14px;
+      letter-spacing:0.2px;
+    }
+    .cardTitle span{
+      color:var(--muted);
+      font-size:12px;
+    }
 
-.discord{ background:#5865F2; }
-.tiktok{ background:#000; }
-.youtube{ background:red; }
+    /* Server status */
+    .statusRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .statusPill{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 12px 14px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,0.06);
+      min-width: 240px;
+    }
+    .statusPill strong{
+      font-size: 13px;
+      letter-spacing:0.2px;
+    }
+    .statusPill em{
+      font-style: normal;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .pulse{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--good);
+      box-shadow: 0 0 0 0 rgba(45,212,191,0.0);
+      animation: pulse 1.6s infinite;
+    }
+    @keyframes pulse{
+      0%{ box-shadow: 0 0 0 0 rgba(45,212,191,0.0); }
+      45%{ box-shadow: 0 0 0 9px rgba(45,212,191,0.12); }
+      100%{ box-shadow: 0 0 0 14px rgba(45,212,191,0.0); }
+    }
 
-.clock{
-    font-weight:bold;
-}
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-weight: 800;
+      color: var(--text);
+      background: rgba(255,255,255,0.06);
+      border:1px solid var(--stroke);
+      transition: transform .15s ease, background .15s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.10); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,92,255,0.95), rgba(40,215,255,0.75));
+      border-color: rgba(255,255,255,0.18);
+      color: #0B1020;
+    }
 
-.visitor{
-    font-size:14px;
-}
-</style>
+    /* Social cards */
+    .socialGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 900px){
+      .socialGrid{ grid-template-columns: 1fr; }
+    }
+    .social{
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      text-decoration:none;
+      color: var(--text);
+      transition: transform .15s ease, background .15s ease;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .social:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.09); }
+    .social small{ color:var(--muted); display:block; margin-top:2px; }
+    .tag{
+      font-size:12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,0.06);
+      white-space:nowrap;
+    }
+
+    /* Admin modal */
+    .backdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,0.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index: 50;
+      padding: 18px;
+    }
+    .modal{
+      width: min(520px, 92vw);
+      border-radius: 22px;
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card2), var(--card));
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      padding: 16px;
+    }
+    .modalHead{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .modalHead h3{ margin:0; font-size: 15px; }
+    .modalHead p{ margin: 4px 0 0; color: var(--muted); font-size: 12.5px; line-height:1.4; }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 520px){
+      .row{ grid-template-columns: 1fr; }
+    }
+    .field{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 10px;
+    }
+    .field label{
+      display:block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 650;
+    }
+    input[type="text"], input[type="password"]{
+      width:100%;
+      border:none;
+      outline:none;
+      background: transparent;
+      color: var(--text);
+      font-weight: 750;
+      font-size: 14px;
+    }
+    input[type="color"]{
+      width:100%;
+      height:42px;
+      border:none;
+      background: transparent;
+      padding:0;
+      cursor:pointer;
+    }
+
+    .modalActions{
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      margin-top: 12px;
+      flex-wrap:wrap;
+    }
+
+    /* Toast */
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      padding: 12px 14px;
+      border-radius: 999px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.35);
+      display:none;
+      z-index: 80;
+      font-weight: 750;
+      font-size: 13px;
+      max-width: 92vw;
+      text-align:center;
+    }
+
+    /* Footer */
+    .footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12.5px;
+      text-align:center;
+      opacity: 0.9;
+    }
+
+    /* Hide tabs */
+    .tab{ display:none; }
+    .tab.active{ display:block; }
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
 
-<header>
-    <h2>My Website</h2>
-    <div>
-        <span class="clock" id="clock"></span>
-        <span class="visitor" id="visitorCount"></span>
-        <button class="button" onclick="toggleMode()">🌙</button>
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>MaxCreator</h1>
+          <p>Custom Commands • Panel</p>
+        </div>
+      </div>
+
+      <div class="nav" role="navigation" aria-label="Navigation">
+        <div class="chip active" id="tabBtn-home" onclick="showTab('home')">🏠 Home</div>
+        <div class="chip" id="tabBtn-social" onclick="showTab('social')">💼 Social</div>
+      </div>
+
+      <div class="right">
+        <div class="pill" title="Heure + visiteurs (local)">
+          <span class="dot" aria-hidden="true"></span>
+          <span id="clock">--:--:--</span>
+          <span style="opacity:.55">•</span>
+          <span id="visitorCount">Visitors: 0</span>
+        </div>
+        <button class="iconbtn" onclick="toggleTheme()" title="Mode clair/sombre">🌓</button>
+      </div>
     </div>
-</header>
 
-<nav>
-    <button onclick="showTab('home')">Home</button>
-    <button onclick="showTab('social')">Social / Business</button>
-</nav>
+    <div class="hero">
+      <div class="panel">
+        <h2 class="heroTitle">Un site propre, moderne, et rapide.</h2>
+        <p class="heroSub">
+          Ici tu peux afficher le statut, tes liens, et un mini “admin” (pas sécurisé, mais ok pour toi).
+          Tout est sauvegardé en <span class="badge">localStorage</span> sur l’appareil.
+        </p>
 
-<div id="home" class="tab active-tab">
-    <div class="card">
-        <h3>Server Status</h3>
-        <div id="serverStatus" class="status" style="background:green;">Online</div>
+        <div class="stats">
+          <div class="mini">
+            <p class="k">Statut actuel</p>
+            <p class="v"><span id="statusLabel">Online</span> <span class="badge" id="statusBadge">OK</span></p>
+          </div>
+          <div class="mini">
+            <p class="k">Mode</p>
+            <p class="v"><span id="themeLabel">Sombre</span> <span class="badge">UI</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="cardTitle">
+          <h2>Actions rapides</h2>
+          <span>Admin + Reset</span>
+        </div>
+        <button class="btn primary" style="width:100%;" onclick="openAdmin()">🔐 Admin</button>
+        <div style="height:10px;"></div>
+        <button class="btn" style="width:100%;" onclick="resetLocal()">🧹 Reset local</button>
+        <p style="margin:10px 0 0; color:var(--muted); font-size:12.5px; line-height:1.4;">
+          Reset supprime les réglages du navigateur (visiteurs, thème, statut).
+        </p>
+      </div>
     </div>
-</div>
 
-<div id="social" class="tab">
-    <h3>Social / Business</h3>
-    <a href="#" class="social-btn discord">Discord</a>
-    <a href="#" class="social-btn tiktok">TikTok</a>
-    <a href="#" class="social-btn youtube">YouTube</a>
-</div>
+    <!-- HOME -->
+    <div id="home" class="tab active">
+      <div class="grid">
+        <div class="panel col-8">
+          <div class="cardTitle">
+            <h2>Server Status</h2>
+            <span>Affichage public</span>
+          </div>
 
-<div style="text-align:center;">
-<button class="button" onclick="login()">Admin Login</button>
-<button class="button" onclick="logout()">Logout</button>
-</div>
+          <div class="statusRow">
+            <div class="statusPill" id="statusPill">
+              <div class="pulse" id="statusPulse" aria-hidden="true"></div>
+              <div>
+                <strong id="serverStatusText">Online</strong><br/>
+                <em id="serverStatusSub">Tout est OK.</em>
+              </div>
+            </div>
 
-<div class="admin-panel" id="adminPanel">
-<h3>Admin Panel</h3>
+            <button class="btn" onclick="cycleStatus()">🔁 Changer (rapide)</button>
+          </div>
+        </div>
 
-<input type="text" id="newServerStatus" placeholder="Server Status Text"><br>
-<input type="color" id="serverColor"><br>
+        <div class="panel col-4">
+          <div class="cardTitle">
+            <h2>Infos</h2>
+            <span>Local</span>
+          </div>
+          <p style="margin:0; color:var(--muted); line-height:1.55; font-size:13px;">
+            • Visiteurs = compteur local (par navigateur)<br/>
+            • Admin = mot de passe dans le code (pas sécurisé)<br/>
+            • Statut et thème sont sauvegardés en localStorage
+          </p>
+        </div>
+      </div>
+    </div>
 
-<button onclick="updateServer()">Update Server</button>
-</div>
+    <!-- SOCIAL -->
+    <div id="social" class="tab">
+      <div class="grid">
+        <div class="panel col-12">
+          <div class="cardTitle">
+            <h2>Social / Business</h2>
+            <span>mets tes vrais liens</span>
+          </div>
 
-<script>
+          <div class="socialGrid">
+            <a class="social" href="#" id="linkDiscord" target="_blank" rel="noopener">
+              <div>
+                <strong>Discord</strong>
+                <small>Serveur / contact</small>
+              </div>
+              <span class="tag">Join</span>
+            </a>
 
-let password = "Max1cmdrowner!";
-let isAdmin = false;
+            <a class="social" href="#" id="linkTikTok" target="_blank" rel="noopener">
+              <div>
+                <strong>TikTok</strong>
+                <small>Shorts & contenu</small>
+              </div>
+              <span class="tag">Follow</span>
+            </a>
 
-/* Tabs */
-function showTab(tab){
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active-tab"));
-    document.getElementById(tab).classList.add("active-tab");
-}
+            <a class="social" href="#" id="linkYouTube" target="_blank" rel="noopener">
+              <div>
+                <strong>YouTube</strong>
+                <small>Chaîne & vidéos</small>
+              </div>
+              <span class="tag">Subscribe</span>
+            </a>
+          </div>
 
-/* Login */
-function login(){
-    let userPass = prompt("Enter password:");
-    if(userPass === password){
-        isAdmin = true;
-        document.getElementById("adminPanel").style.display = "block";
-        alert("Admin mode activated");
-    } else alert("Wrong password!");
-}
+          <p style="margin:12px 0 0; color:var(--muted); font-size:12.5px;">
+            Astuce : dans l’admin tu peux aussi changer les liens (si tu veux je te l’ajoute).
+          </p>
+        </div>
+      </div>
+    </div>
 
-function logout(){
-    isAdmin = false;
-    document.getElementById("adminPanel").style.display = "none";
-    alert("Logged out");
-}
+    <div class="footer">
+      © <span id="year"></span> • MaxCreator • GitHub Pages
+    </div>
+  </div>
 
-/* Server Status */
-function updateServer(){
-    if(!isAdmin) return alert("Admin only");
+  <!-- ADMIN MODAL -->
+  <div class="backdrop" id="backdrop" onclick="closeAdmin(event)">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Admin panel" onclick="event.stopPropagation()">
+      <div class="modalHead">
+        <div>
+          <h3>Admin Panel</h3>
+          <p>
+            Oui, c’est pas sécurisé. C’est volontaire.<br/>
+            Ça sert juste à personnaliser le statut sur ce navigateur.
+          </p>
+        </div>
+        <button class="iconbtn" onclick="closeAdmin()" title="Fermer">✖️</button>
+      </div>
 
-    let text = document.getElementById("newServerStatus").value;
-    let color = document.getElementById("serverColor").value;
+      <div class="row" id="loginRow">
+        <div class="field">
+          <label>Mot de passe</label>
+          <input type="password" id="adminPass" placeholder="password" />
+        </div>
+        <div class="field">
+          <label>Action</label>
+          <button class="btn primary" style="width:100%;" onclick="login()">Se connecter</button>
+        </div>
+      </div>
 
-    if(text){
-        let status = document.getElementById("serverStatus");
-        status.innerText = text;
-        status.style.background = color || "green";
+      <div id="adminRow" style="display:none;">
+        <div class="row">
+          <div class="field">
+            <label>Texte statut</label>
+            <input type="text" id="newServerStatus" placeholder="Ex: Maintenance" />
+          </div>
+          <div class="field">
+            <label>Couleur</label>
+            <input type="color" id="serverColor" value="#2DD4BF" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label>Sous-texte</label>
+            <input type="text" id="statusSub" placeholder="Ex: Retour dans 1h" />
+          </div>
+          <div class="field">
+            <label>Raccourci</label>
+            <button class="btn" style="width:100%;" onclick="logout()">Se déconnecter</button>
+          </div>
+        </div>
+
+        <div class="modalActions">
+          <button class="btn" onclick="applySavedStatus()">Annuler</button>
+          <button class="btn primary" onclick="updateServer()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">OK</div>
+
+  <script>
+    // ========= Réglages =========
+    // ⚠️ Non sécurisé (visible dans le code) — tu as dit "tant pis"
+    const ADMIN_PASSWORD = "max";
+
+    // localStorage keys
+    const K_THEME = "mc_theme";
+    const K_VISITS = "mc_visits";
+    const K_STATUS_TEXT = "mc_status_text";
+    const K_STATUS_SUB = "mc_status_sub";
+    const K_STATUS_COLOR = "mc_status_color";
+
+    let isAdmin = false;
+
+    // ========= Util =========
+    function $(id){ return document.getElementById(id); }
+
+    function toast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => t.style.display = "none", 1600);
     }
-}
 
-/* Dark / Light Mode */
-function toggleMode(){
-    document.body.classList.toggle("light-mode");
-}
+    // ========= Tabs =========
+    function showTab(tab){
+      ["home","social"].forEach(id => {
+        const el = $(id);
+        el.classList.toggle("active", id === tab);
+      });
+      ["home","social"].forEach(id => {
+        const btn = $("tabBtn-" + id);
+        btn.classList.toggle("active", id === tab);
+      });
+    }
 
-/* Live Clock */
-function updateClock(){
-    let now = new Date();
-    document.getElementById("clock").innerText =
-        now.toLocaleTimeString() + " | ";
-}
-setInterval(updateClock,1000);
+    // ========= Thème =========
+    function applySavedTheme(){
+      const saved = localStorage.getItem(K_THEME) || "dark";
+      document.body.classList.toggle("light", saved === "light");
+      $("themeLabel").textContent = (saved === "light") ? "Clair" : "Sombre";
+    }
 
-/* Visitor Counter */
-if(localStorage.getItem("visits")){
-    let visits = Number(localStorage.getItem("visits")) + 1;
-    localStorage.setItem("visits", visits);
-}else{
-    localStorage.setItem("visits",1);
-}
-document.getElementById("visitorCount").innerText =
-    "Visitors: " + localStorage.getItem("visits");
+    function toggleTheme(){
+      const isLight = document.body.classList.toggle("light");
+      localStorage.setItem(K_THEME, isLight ? "light" : "dark");
+      applySavedTheme();
+      toast(isLight ? "Mode clair" : "Mode sombre");
+    }
 
-</script>
+    // ========= Horloge =========
+    function updateClock(){
+      const now = new Date();
+      $("clock").textContent = now.toLocaleTimeString("fr-FR");
+    }
 
+    // ========= Visites =========
+    function updateVisits(){
+      const current = Number(localStorage.getItem(K_VISITS) || "0") + 1;
+      localStorage.setItem(K_VISITS, String(current));
+      $("visitorCount").textContent = "Visitors: " + current;
+    }
+
+    // ========= Statut =========
+    function applySavedStatus(){
+      const text = localStorage.getItem(K_STATUS_TEXT) || "Online";
+      const sub = localStorage.getItem(K_STATUS_SUB) || "Tout est OK.";
+      const color = localStorage.getItem(K_STATUS_COLOR) || "#2DD4BF";
+
+      $("serverStatusText").textContent = text;
+      $("serverStatusSub").textContent = sub;
+
+      // Couleur
+      $("statusPulse").style.background = color;
+      $("statusPill").style.borderColor = "rgba(255,255,255,0.10)";
+      $("statusPill").style.background = "rgba(255,255,255,0.06)";
+
+      // Badge “OK / WARN / DOWN” (simple)
+      const badge = $("statusBadge");
+      const label = $("statusLabel");
+      label.textContent = text;
+
+      const t = text.toLowerCase();
+      if (t.includes("offline") || t.includes("down") || t.includes("error")){
+        badge.textContent = "DOWN";
+        badge.style.background = "rgba(251,113,133,0.18)";
+        badge.style.borderColor = "rgba(251,113,133,0.28)";
+      } else if (t.includes("maint") || t.includes("slow") || t.includes("warn")){
+        badge.textContent = "WARN";
+        badge.style.background = "rgba(251,191,36,0.18)";
+        badge.style.borderColor = "rgba(251,191,36,0.28)";
+      } else {
+        badge.textContent = "OK";
+        badge.style.background = "rgba(45,212,191,0.16)";
+        badge.style.borderColor = "rgba(45,212,191,0.26)";
+      }
+    }
+
+    function cycleStatus(){
+      const cur = (localStorage.getItem(K_STATUS_TEXT) || "Online").toLowerCase();
+      if (cur.includes("online")){
+        localStorage.setItem(K_STATUS_TEXT, "Maintenance");
+        localStorage.setItem(K_STATUS_SUB, "Retour bientôt.");
+        localStorage.setItem(K_STATUS_COLOR, "#FBBF24");
+      } else if (cur.includes("maint")){
+        localStorage.setItem(K_STATUS_TEXT, "Offline");
+        localStorage.setItem(K_STATUS_SUB, "Problème en cours.");
+        localStorage.setItem(K_STATUS_COLOR, "#FB7185");
+      } else {
+        localStorage.setItem(K_STATUS_TEXT, "Online");
+        localStorage.setItem(K_STATUS_SUB, "Tout est OK.");
+        localStorage.setItem(K_STATUS_COLOR, "#2DD4BF");
+      }
+      applySavedStatus();
+      toast("Statut mis à jour");
+    }
+
+    // ========= Admin =========
+    function openAdmin(){
+      $("backdrop").style.display = "flex";
+      // reset view
+      $("loginRow").style.display = isAdmin ? "none" : "grid";
+      $("adminRow").style.display = isAdmin ? "block" : "none";
+      if(!isAdmin) $("adminPass").value = "";
+      if(isAdmin){
+        // pré-remplir
+        $("newServerStatus").value = localStorage.getItem(K_STATUS_TEXT) || "Online";
+        $("statusSub").value = localStorage.getItem(K_STATUS_SUB) || "Tout est OK.";
+        $("serverColor").value = localStorage.getItem(K_STATUS_COLOR) || "#2DD4BF";
+      }
+    }
+
+    function closeAdmin(){
+      $("backdrop").style.display = "none";
+    }
+
+    function login(){
+      const pass = $("adminPass").value;
+      if(pass === ADMIN_PASSWORD){
+        isAdmin = true;
+        $("loginRow").style.display = "none";
+        $("adminRow").style.display = "block";
+        // pré-remplir
+        $("newServerStatus").value = localStorage.getItem(K_STATUS_TEXT) || "Online";
+        $("statusSub").value = localStorage.getItem(K_STATUS_SUB) || "Tout est OK.";
+        $("serverColor").value = localStorage.getItem(K_STATUS_COLOR) || "#2DD4BF";
+        toast("Admin activé");
+      } else {
+        toast("Mauvais mot de passe");
+      }
+    }
+
+    function logout(){
+      isAdmin = false;
+      $("adminRow").style.display = "none";
+      $("loginRow").style.display = "grid";
+      toast("Déconnecté");
+    }
+
+    function updateServer(){
+      if(!isAdmin) return toast("Admin seulement");
+
+      const text = $("newServerStatus").value.trim();
+      const sub  = $("statusSub").value.trim();
+      const color = $("serverColor").value;
+
+      if(!text) return toast("Mets un texte");
+
+      localStorage.setItem(K_STATUS_TEXT, text);
+      localStorage.setItem(K_STATUS_SUB, sub || "—");
+      localStorage.setItem(K_STATUS_COLOR, color || "#2DD4BF");
+      applySavedStatus();
+      toast("Enregistré");
+      closeAdmin();
+    }
+
+    // ========= Reset =========
+    function resetLocal(){
+      localStorage.removeItem(K_THEME);
+      localStorage.removeItem(K_VISITS);
+      localStorage.removeItem(K_STATUS_TEXT);
+      localStorage.removeItem(K_STATUS_SUB);
+      localStorage.removeItem(K_STATUS_COLOR);
+      applySavedTheme();
+      applySavedStatus();
+      updateVisits();
+      toast("Reset OK");
+    }
+
+    // ========= Init =========
+    (function init(){
+      $("year").textContent = String(new Date().getFullYear());
+
+      applySavedTheme();
+      applySavedStatus();
+
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      updateVisits();
+
+      // default links (change ici)
+      $("linkDiscord").href = "#";
+      $("linkTikTok").href = "#";
+      $("linkYouTube").href = "#";
+    })();
+  </script>
 </body>
 </html>

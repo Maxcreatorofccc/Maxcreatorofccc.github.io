@@ -1,37 +1,46 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Website</title>
+  <title>MaxCreator • Custom Commands</title>
 
   <style>
     :root{
-      --bg0:#070A12;
-      --bg1:#0B1020;
+      --bg0:#050714;
+      --bg1:#0A1030;
+
+      --text:#ECF2FF;
+      --muted:rgba(236,242,255,0.72);
+
       --card:rgba(255,255,255,0.06);
       --card2:rgba(255,255,255,0.09);
-      --stroke:rgba(255,255,255,0.10);
-      --text:#EAF0FF;
-      --muted:rgba(234,240,255,0.70);
+      --stroke:rgba(255,255,255,0.12);
+
       --accent:#7C5CFF;
       --accent2:#28D7FF;
+      --accent3:#2DD4BF;
+
       --good:#2DD4BF;
-      --bad:#FB7185;
       --warn:#FBBF24;
-      --shadow: 0 18px 60px rgba(0,0,0,0.45);
+      --bad:#FB7185;
+
+      --shadow: 0 18px 70px rgba(0,0,0,0.50);
       --radius: 22px;
     }
 
     body.light{
       --bg0:#F4F7FF;
       --bg1:#FFFFFF;
-      --card:rgba(0,0,0,0.04);
-      --card2:rgba(0,0,0,0.06);
-      --stroke:rgba(0,0,0,0.08);
+
       --text:#0B1020;
       --muted:rgba(11,16,32,0.68);
-      --shadow: 0 16px 45px rgba(0,0,0,0.12);
+
+      --card:rgba(0,0,0,0.04);
+      --card2:rgba(0,0,0,0.06);
+      --stroke:rgba(0,0,0,0.10);
+
+      --shadow: 0 16px 50px rgba(0,0,0,0.14);
     }
 
     *{box-sizing:border-box}
@@ -41,17 +50,31 @@
       color:var(--text);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
       background:
-        radial-gradient(900px 700px at 15% 10%, rgba(124,92,255,0.35), transparent 55%),
-        radial-gradient(900px 700px at 85% 20%, rgba(40,215,255,0.25), transparent 55%),
-        radial-gradient(800px 650px at 50% 95%, rgba(45,212,191,0.18), transparent 55%),
+        radial-gradient(1000px 800px at 14% 8%, rgba(124,92,255,0.36), transparent 56%),
+        radial-gradient(900px 700px at 86% 16%, rgba(40,215,255,0.26), transparent 56%),
+        radial-gradient(900px 700px at 52% 102%, rgba(45,212,191,0.18), transparent 56%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
       overflow-x:hidden;
     }
 
+    /* Subtle grid noise overlay */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:0.18;
+      background:
+        linear-gradient(to right, rgba(255,255,255,0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(600px 520px at 50% 8%, black 20%, transparent 65%);
+    }
+
     /* Layout */
     .wrap{
-      width:min(1100px, 92vw);
-      margin: 28px auto 80px;
+      width:min(1120px, 92vw);
+      margin: 26px auto 90px;
     }
 
     /* Topbar */
@@ -75,14 +98,14 @@
       display:flex;
       align-items:center;
       gap:12px;
-      min-width: 220px;
+      min-width: 240px;
     }
 
     .logo{
       width:42px; height:42px;
       border-radius:14px;
       background:
-        radial-gradient(14px 14px at 25% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0) 60%),
+        radial-gradient(16px 16px at 26% 30%, rgba(255,255,255,0.92), rgba(255,255,255,0) 62%),
         linear-gradient(135deg, var(--accent), var(--accent2));
       box-shadow: 0 16px 40px rgba(124,92,255,0.25);
       border:1px solid rgba(255,255,255,0.18);
@@ -94,7 +117,7 @@
       margin:0;
       letter-spacing:0.2px;
       line-height:1.2;
-      font-weight: 750;
+      font-weight: 800;
     }
     .brand p{
       margin:2px 0 0;
@@ -118,7 +141,7 @@
       border-radius: 999px;
       cursor:pointer;
       transition: transform .15s ease, background .15s ease, border-color .15s ease;
-      font-weight: 650;
+      font-weight: 700;
       font-size: 13px;
       display:flex;
       align-items:center;
@@ -136,7 +159,7 @@
       align-items:center;
       justify-content:flex-end;
       gap:10px;
-      min-width: 260px;
+      min-width: 300px;
     }
 
     .pill{
@@ -151,6 +174,7 @@
       color: var(--muted);
       white-space:nowrap;
     }
+
     .dot{
       width:9px; height:9px; border-radius:999px;
       background: var(--good);
@@ -164,25 +188,27 @@
       background: rgba(255,255,255,0.06);
       color: var(--text);
       cursor:pointer;
-      transition: transform .15s ease, background .15s ease;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
       display:grid;
       place-items:center;
       user-select:none;
     }
     .iconbtn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.10); }
+    .iconbtn:active{ transform: translateY(0px) scale(0.98); }
 
     /* Hero */
     .hero{
-      margin-top: 18px;
+      margin-top: 16px;
       display:grid;
       grid-template-columns: 1.35fr 0.65fr;
       gap: 14px;
     }
-    @media (max-width: 900px){
+
+    @media (max-width: 920px){
       .hero{ grid-template-columns: 1fr; }
-      .brand{ min-width:auto; }
-      .right{ min-width:auto; }
+      .brand, .right{ min-width:auto; }
       .topbar{ position:static; }
+      .pill{ display:none; }
     }
 
     .panel{
@@ -192,18 +218,32 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 18px;
+      overflow:hidden;
+      position:relative;
+    }
+
+    /* Shiny sweep */
+    .panel::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(500px 180px at 20% -10%, rgba(255,255,255,0.16), transparent 60%);
+      pointer-events:none;
+      opacity:0.65;
     }
 
     .heroTitle{
       margin: 0 0 6px;
-      font-size: 26px;
-      letter-spacing:-0.4px;
+      font-size: 28px;
+      letter-spacing:-0.6px;
+      line-height:1.1;
     }
     .heroSub{
       margin: 0;
       color: var(--muted);
-      line-height:1.5;
+      line-height:1.55;
       font-size: 14px;
+      max-width: 62ch;
     }
 
     .stats{
@@ -212,14 +252,19 @@
       gap:10px;
       margin-top: 14px;
     }
+
+    @media (max-width: 520px){
+      .stats{ grid-template-columns: 1fr; }
+    }
+
     .mini{
       border:1px solid var(--stroke);
       background: rgba(255,255,255,0.05);
       border-radius: 18px;
       padding: 12px 12px;
     }
-    .mini .k{ font-size:12px; color:var(--muted); margin:0 0 6px;}
-    .mini .v{ font-size:16px; font-weight: 800; margin:0; display:flex; align-items:center; gap:8px;}
+    .mini .k{ font-size:12px; color:var(--muted); margin:0 0 6px; font-weight:650;}
+    .mini .v{ font-size:16px; font-weight: 900; margin:0; display:flex; align-items:center; gap:8px;}
     .badge{
       font-size: 12px;
       padding: 4px 10px;
@@ -227,22 +272,7 @@
       border:1px solid var(--stroke);
       background: rgba(255,255,255,0.06);
       color: var(--text);
-      font-weight: 750;
-    }
-
-    /* Cards grid */
-    .grid{
-      margin-top: 14px;
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-    }
-    .col-8{ grid-column: span 8; }
-    .col-4{ grid-column: span 4; }
-    .col-6{ grid-column: span 6; }
-    .col-12{ grid-column: span 12; }
-    @media (max-width: 900px){
-      .col-8,.col-4,.col-6{ grid-column: span 12; }
+      font-weight: 800;
     }
 
     .cardTitle{
@@ -256,13 +286,29 @@
       margin:0;
       font-size: 14px;
       letter-spacing:0.2px;
+      font-weight:900;
     }
     .cardTitle span{
       color:var(--muted);
       font-size:12px;
     }
 
-    /* Server status */
+    /* Grid */
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .col-8{ grid-column: span 8; }
+    .col-4{ grid-column: span 4; }
+    .col-6{ grid-column: span 6; }
+    .col-12{ grid-column: span 12; }
+    @media (max-width: 920px){
+      .col-8,.col-4,.col-6{ grid-column: span 12; }
+    }
+
+    /* Status */
     .statusRow{
       display:flex;
       align-items:center;
@@ -270,6 +316,7 @@
       gap:12px;
       flex-wrap:wrap;
     }
+
     .statusPill{
       display:flex;
       align-items:center;
@@ -278,17 +325,19 @@
       border-radius: 999px;
       border:1px solid var(--stroke);
       background: rgba(255,255,255,0.06);
-      min-width: 240px;
+      min-width: 260px;
     }
     .statusPill strong{
       font-size: 13px;
       letter-spacing:0.2px;
+      font-weight: 950;
     }
     .statusPill em{
       font-style: normal;
       color: var(--muted);
       font-size: 12px;
     }
+
     .pulse{
       width:10px; height:10px; border-radius:999px;
       background: var(--good);
@@ -306,14 +355,17 @@
       cursor:pointer;
       border-radius: 14px;
       padding: 12px 14px;
-      font-weight: 800;
+      font-weight: 900;
       color: var(--text);
       background: rgba(255,255,255,0.06);
       border:1px solid var(--stroke);
-      transition: transform .15s ease, background .15s ease;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
       user-select:none;
+      letter-spacing:0.1px;
     }
     .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.10); }
+    .btn:active{ transform: translateY(0px) scale(0.985); }
+
     .btn.primary{
       background: linear-gradient(135deg, rgba(124,92,255,0.95), rgba(40,215,255,0.75));
       border-color: rgba(255,255,255,0.18);
@@ -326,9 +378,10 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
     }
-    @media (max-width: 900px){
+    @media (max-width: 920px){
       .socialGrid{ grid-template-columns: 1fr; }
     }
+
     .social{
       padding: 14px;
       border-radius: 18px;
@@ -336,14 +389,32 @@
       background: rgba(255,255,255,0.05);
       text-decoration:none;
       color: var(--text);
-      transition: transform .15s ease, background .15s ease;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
+      position:relative;
+      overflow:hidden;
     }
-    .social:hover{ transform: translateY(-1px); background: rgba(255,255,255,0.09); }
+
+    .social::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background: radial-gradient(420px 140px at 18% -12%, rgba(124,92,255,0.22), transparent 60%);
+      pointer-events:none;
+      opacity:0.75;
+    }
+
+    .social:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(124,92,255,0.30);
+    }
+
     .social small{ color:var(--muted); display:block; margin-top:2px; }
+
     .tag{
       font-size:12px;
       padding: 6px 10px;
@@ -351,6 +422,7 @@
       border:1px solid var(--stroke);
       background: rgba(255,255,255,0.06);
       white-space:nowrap;
+      font-weight: 850;
     }
 
     /* Admin modal */
@@ -363,15 +435,23 @@
       z-index: 50;
       padding: 18px;
     }
+
     .modal{
-      width: min(520px, 92vw);
+      width: min(560px, 92vw);
       border-radius: 22px;
       border:1px solid var(--stroke);
       background: linear-gradient(180deg, var(--card2), var(--card));
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
       padding: 16px;
+      transform: translateY(6px);
+      animation: pop .16s ease-out forwards;
     }
+    @keyframes pop{
+      from{ opacity:0; transform: translateY(10px) scale(0.985); }
+      to{ opacity:1; transform: translateY(0px) scale(1); }
+    }
+
     .modalHead{
       display:flex;
       align-items:flex-start;
@@ -379,8 +459,8 @@
       gap:10px;
       margin-bottom: 10px;
     }
-    .modalHead h3{ margin:0; font-size: 15px; }
-    .modalHead p{ margin: 4px 0 0; color: var(--muted); font-size: 12.5px; line-height:1.4; }
+    .modalHead h3{ margin:0; font-size: 15px; font-weight: 950; }
+    .modalHead p{ margin: 4px 0 0; color: var(--muted); font-size: 12.5px; line-height:1.45; }
 
     .row{
       display:grid;
@@ -388,31 +468,35 @@
       gap:10px;
       margin-top: 10px;
     }
-    @media (max-width: 520px){
+    @media (max-width: 560px){
       .row{ grid-template-columns: 1fr; }
     }
+
     .field{
       border:1px solid var(--stroke);
       background: rgba(255,255,255,0.05);
       border-radius: 16px;
       padding: 10px;
     }
+
     .field label{
       display:block;
       font-size: 12px;
       color: var(--muted);
       margin-bottom: 6px;
-      font-weight: 650;
+      font-weight: 800;
     }
+
     input[type="text"], input[type="password"]{
       width:100%;
       border:none;
       outline:none;
       background: transparent;
       color: var(--text);
-      font-weight: 750;
+      font-weight: 850;
       font-size: 14px;
     }
+
     input[type="color"]{
       width:100%;
       height:42px;
@@ -420,6 +504,13 @@
       background: transparent;
       padding:0;
       cursor:pointer;
+    }
+
+    .hint{
+      margin:10px 0 0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height:1.45;
     }
 
     .modalActions{
@@ -438,14 +529,14 @@
       transform: translateX(-50%);
       padding: 12px 14px;
       border-radius: 999px;
-      border:1px solid var(--stroke);
+      border:1px solid rgba(255,255,255,0.16);
       background: rgba(0,0,0,0.55);
       color: #fff;
       backdrop-filter: blur(10px);
       box-shadow: 0 14px 40px rgba(0,0,0,0.35);
       display:none;
       z-index: 80;
-      font-weight: 750;
+      font-weight: 900;
       font-size: 13px;
       max-width: 92vw;
       text-align:center;
@@ -463,6 +554,12 @@
     /* Hide tabs */
     .tab{ display:none; }
     .tab.active{ display:block; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation:none !important; transition:none !important; }
+      body::before{ display:none; }
+    }
   </style>
 </head>
 
@@ -484,46 +581,46 @@
       </div>
 
       <div class="right">
-        <div class="pill" title="Heure + visiteurs (local)">
+        <div class="pill" title="Time + visitors (local)">
           <span class="dot" aria-hidden="true"></span>
           <span id="clock">--:--:--</span>
           <span style="opacity:.55">•</span>
           <span id="visitorCount">Visitors: 0</span>
         </div>
-        <button class="iconbtn" onclick="toggleTheme()" title="Mode clair/sombre">🌓</button>
+        <button class="iconbtn" onclick="toggleTheme()" title="Light / dark mode">🌓</button>
       </div>
     </div>
 
     <div class="hero">
       <div class="panel">
-        <h2 class="heroTitle">Un site propre, moderne, et rapide.</h2>
+        <h2 class="heroTitle">Clean, modern, and fast.</h2>
         <p class="heroSub">
-          Ici tu peux afficher le statut, tes liens, et un mini “admin” (pas sécurisé, mais ok pour toi).
-          Tout est sauvegardé en <span class="badge">localStorage</span> sur l’appareil.
+          Show your server status, your links, and a tiny admin panel (not secure — you said that’s fine).
+          Everything is saved in <span class="badge">localStorage</span> on this device.
         </p>
 
         <div class="stats">
           <div class="mini">
-            <p class="k">Statut actuel</p>
+            <p class="k">Current status</p>
             <p class="v"><span id="statusLabel">Online</span> <span class="badge" id="statusBadge">OK</span></p>
           </div>
           <div class="mini">
-            <p class="k">Mode</p>
-            <p class="v"><span id="themeLabel">Sombre</span> <span class="badge">UI</span></p>
+            <p class="k">Theme</p>
+            <p class="v"><span id="themeLabel">Dark</span> <span class="badge">UI</span></p>
           </div>
         </div>
       </div>
 
       <div class="panel">
         <div class="cardTitle">
-          <h2>Actions rapides</h2>
+          <h2>Quick actions</h2>
           <span>Admin + Reset</span>
         </div>
         <button class="btn primary" style="width:100%;" onclick="openAdmin()">🔐 Admin</button>
         <div style="height:10px;"></div>
         <button class="btn" style="width:100%;" onclick="resetLocal()">🧹 Reset local</button>
-        <p style="margin:10px 0 0; color:var(--muted); font-size:12.5px; line-height:1.4;">
-          Reset supprime les réglages du navigateur (visiteurs, thème, statut).
+        <p class="hint">
+          Reset removes local settings (visitors, theme, status) from this browser.
         </p>
       </div>
     </div>
@@ -533,8 +630,8 @@
       <div class="grid">
         <div class="panel col-8">
           <div class="cardTitle">
-            <h2>Server Status</h2>
-            <span>Affichage public</span>
+            <h2>Server status</h2>
+            <span>Public display</span>
           </div>
 
           <div class="statusRow">
@@ -542,23 +639,23 @@
               <div class="pulse" id="statusPulse" aria-hidden="true"></div>
               <div>
                 <strong id="serverStatusText">Online</strong><br/>
-                <em id="serverStatusSub">Tout est OK.</em>
+                <em id="serverStatusSub">Everything is running smoothly.</em>
               </div>
             </div>
 
-            <button class="btn" onclick="cycleStatus()">🔁 Changer (rapide)</button>
+            <button class="btn" onclick="cycleStatus()">🔁 Quick switch</button>
           </div>
         </div>
 
         <div class="panel col-4">
           <div class="cardTitle">
-            <h2>Infos</h2>
+            <h2>Notes</h2>
             <span>Local</span>
           </div>
-          <p style="margin:0; color:var(--muted); line-height:1.55; font-size:13px;">
-            • Visiteurs = compteur local (par navigateur)<br/>
-            • Admin = mot de passe dans le code (pas sécurisé)<br/>
-            • Statut et thème sont sauvegardés en localStorage
+          <p class="hint" style="margin:0;">
+            • Visitors = local counter (per browser)<br/>
+            • Admin = password in the code (not secure)<br/>
+            • Status and theme are saved in localStorage
           </p>
         </div>
       </div>
@@ -569,15 +666,15 @@
       <div class="grid">
         <div class="panel col-12">
           <div class="cardTitle">
-            <h2>Social / Business</h2>
-            <span>mets tes vrais liens</span>
+            <h2>Social / business</h2>
+            <span>put your real links</span>
           </div>
 
           <div class="socialGrid">
             <a class="social" href="#" id="linkDiscord" target="_blank" rel="noopener">
               <div>
                 <strong>Discord</strong>
-                <small>Serveur / contact</small>
+                <small>Server / contact</small>
               </div>
               <span class="tag">Join</span>
             </a>
@@ -585,7 +682,7 @@
             <a class="social" href="#" id="linkTikTok" target="_blank" rel="noopener">
               <div>
                 <strong>TikTok</strong>
-                <small>Shorts & contenu</small>
+                <small>Shorts & content</small>
               </div>
               <span class="tag">Follow</span>
             </a>
@@ -593,14 +690,14 @@
             <a class="social" href="#" id="linkYouTube" target="_blank" rel="noopener">
               <div>
                 <strong>YouTube</strong>
-                <small>Chaîne & vidéos</small>
+                <small>Channel & videos</small>
               </div>
               <span class="tag">Subscribe</span>
             </a>
           </div>
 
-          <p style="margin:12px 0 0; color:var(--muted); font-size:12.5px;">
-            Astuce : dans l’admin tu peux aussi changer les liens (si tu veux je te l’ajoute).
+          <p class="hint">
+            Tip: if you want, I can also add link editing inside the admin panel.
           </p>
         </div>
       </div>
@@ -616,62 +713,68 @@
     <div class="modal" role="dialog" aria-modal="true" aria-label="Admin panel" onclick="event.stopPropagation()">
       <div class="modalHead">
         <div>
-          <h3>Admin Panel</h3>
+          <h3>Admin panel</h3>
           <p>
-            Oui, c’est pas sécurisé. C’est volontaire.<br/>
-            Ça sert juste à personnaliser le statut sur ce navigateur.
+            Yes, it’s not secure. That’s intentional.<br/>
+            It only customizes the status on this browser.
           </p>
         </div>
-        <button class="iconbtn" onclick="closeAdmin()" title="Fermer">✖️</button>
+        <button class="iconbtn" onclick="closeAdmin()" title="Close">✖️</button>
       </div>
 
       <div class="row" id="loginRow">
         <div class="field">
-          <label>Mot de passe</label>
+          <label>Password</label>
           <input type="password" id="adminPass" placeholder="password" />
         </div>
         <div class="field">
           <label>Action</label>
-          <button class="btn primary" style="width:100%;" onclick="login()">Se connecter</button>
+          <button class="btn primary" style="width:100%;" onclick="login()">Log in</button>
         </div>
       </div>
 
       <div id="adminRow" style="display:none;">
         <div class="row">
           <div class="field">
-            <label>Texte statut</label>
-            <input type="text" id="newServerStatus" placeholder="Ex: Maintenance" />
+            <label>Status text</label>
+            <input type="text" id="newServerStatus" placeholder="e.g. Maintenance" />
           </div>
           <div class="field">
-            <label>Couleur</label>
+            <label>Color</label>
             <input type="color" id="serverColor" value="#2DD4BF" />
           </div>
         </div>
 
         <div class="row">
           <div class="field">
-            <label>Sous-texte</label>
-            <input type="text" id="statusSub" placeholder="Ex: Retour dans 1h" />
+            <label>Sub text</label>
+            <input type="text" id="statusSub" placeholder="e.g. Back in 1 hour" />
           </div>
           <div class="field">
-            <label>Raccourci</label>
-            <button class="btn" style="width:100%;" onclick="logout()">Se déconnecter</button>
+            <label>Shortcut</label>
+            <button class="btn" style="width:100%;" onclick="logout()">Log out</button>
           </div>
         </div>
 
         <div class="modalActions">
-          <button class="btn" onclick="applySavedStatus()">Annuler</button>
-          <button class="btn primary" onclick="updateServer()">Enregistrer</button>
+          <button class="btn" onclick="applySavedStatus()">Cancel</button>
+          <button class="btn primary" onclick="updateServer()">Save</button>
         </div>
       </div>
+
+      <p class="hint">
+        Security note: anyone can view the password in your page source.
+      </p>
     </div>
   </div>
 
   <div class="toast" id="toast">OK</div>
 
   <script>
-    // ========= Réglages =========
-    // ⚠️ Non sécurisé (visible dans le code) — tu as dit "tant pis"
+    // ===========================
+    // Settings (NOT secure)
+    // ===========================
+    // The password is visible in the source code. You said that's fine.
     const ADMIN_PASSWORD = "max";
 
     // localStorage keys
@@ -683,18 +786,22 @@
 
     let isAdmin = false;
 
-    // ========= Util =========
+    // ===========================
+    // Utilities
+    // ===========================
     function $(id){ return document.getElementById(id); }
 
-    function toast(msg){
+    function showToast(message){
       const t = $("toast");
-      t.textContent = msg;
+      t.textContent = message;
       t.style.display = "block";
       clearTimeout(window.__toastTimer);
       window.__toastTimer = setTimeout(() => t.style.display = "none", 1600);
     }
 
-    // ========= Tabs =========
+    // ===========================
+    // Tabs
+    // ===========================
     function showTab(tab){
       ["home","social"].forEach(id => {
         const el = $(id);
@@ -706,48 +813,54 @@
       });
     }
 
-    // ========= Thème =========
+    // ===========================
+    // Theme
+    // ===========================
     function applySavedTheme(){
       const saved = localStorage.getItem(K_THEME) || "dark";
       document.body.classList.toggle("light", saved === "light");
-      $("themeLabel").textContent = (saved === "light") ? "Clair" : "Sombre";
+      $("themeLabel").textContent = (saved === "light") ? "Light" : "Dark";
     }
 
     function toggleTheme(){
       const isLight = document.body.classList.toggle("light");
       localStorage.setItem(K_THEME, isLight ? "light" : "dark");
       applySavedTheme();
-      toast(isLight ? "Mode clair" : "Mode sombre");
+      showToast(isLight ? "Light mode" : "Dark mode");
     }
 
-    // ========= Horloge =========
+    // ===========================
+    // Clock
+    // ===========================
     function updateClock(){
       const now = new Date();
-      $("clock").textContent = now.toLocaleTimeString("fr-FR");
+      $("clock").textContent = now.toLocaleTimeString("en-US");
     }
 
-    // ========= Visites =========
+    // ===========================
+    // Visits
+    // ===========================
     function updateVisits(){
       const current = Number(localStorage.getItem(K_VISITS) || "0") + 1;
       localStorage.setItem(K_VISITS, String(current));
       $("visitorCount").textContent = "Visitors: " + current;
     }
 
-    // ========= Statut =========
+    // ===========================
+    // Status
+    // ===========================
     function applySavedStatus(){
       const text = localStorage.getItem(K_STATUS_TEXT) || "Online";
-      const sub = localStorage.getItem(K_STATUS_SUB) || "Tout est OK.";
+      const sub  = localStorage.getItem(K_STATUS_SUB)  || "Everything is running smoothly.";
       const color = localStorage.getItem(K_STATUS_COLOR) || "#2DD4BF";
 
       $("serverStatusText").textContent = text;
       $("serverStatusSub").textContent = sub;
 
-      // Couleur
+      // Color
       $("statusPulse").style.background = color;
-      $("statusPill").style.borderColor = "rgba(255,255,255,0.10)";
-      $("statusPill").style.background = "rgba(255,255,255,0.06)";
 
-      // Badge “OK / WARN / DOWN” (simple)
+      // Badge logic (simple keywords)
       const badge = $("statusBadge");
       const label = $("statusLabel");
       label.textContent = text;
@@ -770,34 +883,40 @@
 
     function cycleStatus(){
       const cur = (localStorage.getItem(K_STATUS_TEXT) || "Online").toLowerCase();
+
       if (cur.includes("online")){
         localStorage.setItem(K_STATUS_TEXT, "Maintenance");
-        localStorage.setItem(K_STATUS_SUB, "Retour bientôt.");
+        localStorage.setItem(K_STATUS_SUB, "Back soon.");
         localStorage.setItem(K_STATUS_COLOR, "#FBBF24");
       } else if (cur.includes("maint")){
         localStorage.setItem(K_STATUS_TEXT, "Offline");
-        localStorage.setItem(K_STATUS_SUB, "Problème en cours.");
+        localStorage.setItem(K_STATUS_SUB, "Issue in progress.");
         localStorage.setItem(K_STATUS_COLOR, "#FB7185");
       } else {
         localStorage.setItem(K_STATUS_TEXT, "Online");
-        localStorage.setItem(K_STATUS_SUB, "Tout est OK.");
+        localStorage.setItem(K_STATUS_SUB, "Everything is running smoothly.");
         localStorage.setItem(K_STATUS_COLOR, "#2DD4BF");
       }
+
       applySavedStatus();
-      toast("Statut mis à jour");
+      showToast("Status updated");
     }
 
-    // ========= Admin =========
+    // ===========================
+    // Admin
+    // ===========================
     function openAdmin(){
       $("backdrop").style.display = "flex";
-      // reset view
       $("loginRow").style.display = isAdmin ? "none" : "grid";
       $("adminRow").style.display = isAdmin ? "block" : "none";
-      if(!isAdmin) $("adminPass").value = "";
-      if(isAdmin){
-        // pré-remplir
+
+      if(!isAdmin){
+        $("adminPass").value = "";
+        $("adminPass").focus();
+      } else {
+        // Pre-fill fields
         $("newServerStatus").value = localStorage.getItem(K_STATUS_TEXT) || "Online";
-        $("statusSub").value = localStorage.getItem(K_STATUS_SUB) || "Tout est OK.";
+        $("statusSub").value = localStorage.getItem(K_STATUS_SUB) || "Everything is running smoothly.";
         $("serverColor").value = localStorage.getItem(K_STATUS_COLOR) || "#2DD4BF";
       }
     }
@@ -806,19 +925,27 @@
       $("backdrop").style.display = "none";
     }
 
+    function closeAdminFromEsc(e){
+      if(e.key === "Escape" && $("backdrop").style.display === "flex"){
+        closeAdmin();
+      }
+    }
+
     function login(){
       const pass = $("adminPass").value;
       if(pass === ADMIN_PASSWORD){
         isAdmin = true;
         $("loginRow").style.display = "none";
         $("adminRow").style.display = "block";
-        // pré-remplir
+
+        // Pre-fill fields
         $("newServerStatus").value = localStorage.getItem(K_STATUS_TEXT) || "Online";
-        $("statusSub").value = localStorage.getItem(K_STATUS_SUB) || "Tout est OK.";
+        $("statusSub").value = localStorage.getItem(K_STATUS_SUB) || "Everything is running smoothly.";
         $("serverColor").value = localStorage.getItem(K_STATUS_COLOR) || "#2DD4BF";
-        toast("Admin activé");
+
+        showToast("Admin enabled");
       } else {
-        toast("Mauvais mot de passe");
+        showToast("Wrong password");
       }
     }
 
@@ -826,40 +953,46 @@
       isAdmin = false;
       $("adminRow").style.display = "none";
       $("loginRow").style.display = "grid";
-      toast("Déconnecté");
+      showToast("Logged out");
     }
 
     function updateServer(){
-      if(!isAdmin) return toast("Admin seulement");
+      if(!isAdmin) return showToast("Admin only");
 
       const text = $("newServerStatus").value.trim();
       const sub  = $("statusSub").value.trim();
       const color = $("serverColor").value;
 
-      if(!text) return toast("Mets un texte");
+      if(!text) return showToast("Type a status text");
 
       localStorage.setItem(K_STATUS_TEXT, text);
       localStorage.setItem(K_STATUS_SUB, sub || "—");
       localStorage.setItem(K_STATUS_COLOR, color || "#2DD4BF");
+
       applySavedStatus();
-      toast("Enregistré");
+      showToast("Saved");
       closeAdmin();
     }
 
-    // ========= Reset =========
+    // ===========================
+    // Reset
+    // ===========================
     function resetLocal(){
       localStorage.removeItem(K_THEME);
       localStorage.removeItem(K_VISITS);
       localStorage.removeItem(K_STATUS_TEXT);
       localStorage.removeItem(K_STATUS_SUB);
       localStorage.removeItem(K_STATUS_COLOR);
+
       applySavedTheme();
       applySavedStatus();
       updateVisits();
-      toast("Reset OK");
+      showToast("Local reset done");
     }
 
-    // ========= Init =========
+    // ===========================
+    // Init
+    // ===========================
     (function init(){
       $("year").textContent = String(new Date().getFullYear());
 
@@ -871,10 +1004,13 @@
 
       updateVisits();
 
-      // default links (change ici)
+      // Default links (replace these)
       $("linkDiscord").href = "#";
       $("linkTikTok").href = "#";
       $("linkYouTube").href = "#";
+
+      // Close modal with ESC
+      window.addEventListener("keydown", closeAdminFromEsc);
     })();
   </script>
 </body>

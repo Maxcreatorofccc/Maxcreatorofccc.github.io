@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ban Admin Panel</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: Arial, sans-serif; background: #1a1a2e; color: #eee; padding: 20px; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  h1 { color: #00d4ff; margin-bottom: 20px; }
+  h2 { margin-bottom: 15px; }
+  .card { background: #16213e; border-radius: 10px; padding: 20px; margin-bottom: 20px; }
+  .input-group { display: flex; gap: 10px; margin-bottom: 15px; }
+  input { flex: 1; padding: 12px; border: none; border-radius: 5px; background: #0f3460; color: #fff; }
+  button { padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+  .btn-ban { background: #e94560; color: white; }
+  .btn-unban { background: #00d4ff; color: #1a1a2e; }
+  .btn-refresh { background: #4CAF50; color: white; }
+  table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+  th, td { padding: 12px; text-align: left; border-bottom: 1px solid #0f3460; }
+  th { color: #00d4ff; }
+  .status-banned { color: #e94560; }
+  .status-unbanned { color: #4CAF50; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🎮 Ban Admin Panel</h1>
+
+<div class="card">
+<h2>🚫 Ban Player</h2>
+<div class="input-group">
+<input type="text" id="banUserId" placeholder="User ID">
+<input type="text" id="banReason" placeholder="Reason">
+<button class="btn-ban" onclick="banPlayer()">Ban</button>
+</div>
+</div>
+
+<div class="card">
+<h2>✅ Unban Player</h2>
+<div class="input-group">
+<input type="text" id="unbanUserId" placeholder="User ID">
+<button class="btn-unban" onclick="unbanPlayer()">Unban</button>
+</div>
+</div>
+
+<div class="card">
+<h2>📋 Active Bans</h2>
+<button class="btn-refresh" onclick="loadBans()">Refresh</button>
+<table id="bansTable">
+<thead>
+<tr>
+<th>User ID</th>
+<th>Username</th>
+<th>Reason</th>
+<th>Banned By</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</div>
+
+<script>
+  // SUPABASE CONFIGURATION - Enter your credentials here!
+  const SUPABASE_URL = 'https://jsagmfmxqywmvzvgqdtz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpzYWdtZm14cXl3bXZ6dmdxZHR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDIyNjcsImV4cCI6MjA5MjAxODI2N30.cHBUx7lvrIfaBI4S2_TxCZP29Oe4oVVwnDD24NxH8SM';
+  
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Load bans
+  async function loadBans() {
+      const { data, error } = await supabase
+          .from('bans')
+          .select('*')
+          .eq('unbanned', false)
+          .order('banned_at', { ascending: false });
+
+      const tbody = document.querySelector('#bansTable tbody');
+      tbody.innerHTML = '';
+
+      if (data) {
+          data.forEach(ban => {
+              tbody.innerHTML += `
+<tr>
+<td>${ban.user_id}</td>
+<td>${ban.username || 'Unknown'}</td>
+<td>${ban.reason}</td>
+<td>${ban.banned_by}</td>
+<td>${new Date(ban.banned_at).toLocaleDateString()}</td>
+<td><button class="btn-unban" onclick="quickUnban('${ban.user_id}')">Unban</button></td>
+</tr>
+`;
+});
+}
+}
+
+// Ban player
+async function banPlayer() {
+const userId = document.getElementById('banUserId').value;
+const reason = document.getElementById('banReason').value;
+
+if (!userId) return alert('Enter a User ID!');
+
+const { error } = await supabase.from('bans').insert({
+user_id: userId,
+reason: reason || 'No reason provided',
+banned_by: 'Website',
+banned_at: new Date().toISOString()
+});
+
+if (error) {
+alert('Error: ' + error.message);
+} else {
+alert('Player banned successfully!');
+loadBans();
+}
+}
+
+// Unban player
+async function unbanPlayer() {
+const userId = document.getElementById('unbanUserId').value;
+
+if (!userId) return alert('Enter a User ID!');
+
+// Create unban request (Roblox processes it)
+const { error } = await supabase.from('unban_requests').insert({
+user_id: userId,
+requested_by: 'Website',
+requested_at: new Date().toISOString()
+});
+
+if (error) {
+alert('Error: ' + error.message);
+} else {
+alert('Unban request sent! Roblox will process it automatically.');
+}
+}
+
+// Quick unban from list
+async function quickUnban(userId) {
+const { error } = await supabase.from('unban_requests').insert({
+user_id: userId,
+requested_by: 'Website',
+requested_at: new Date().toISOString()
+});
+
+if (!error) {
+alert('Unban request sent!');
+}
+}
+
+// Load bans on page load
+loadBans();
+</script>
+</body>
+</html>
